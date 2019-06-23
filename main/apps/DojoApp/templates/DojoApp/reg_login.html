@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>New</title>
+    <title>Reg/Login</title>
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
@@ -93,23 +93,23 @@
 <body>
     <!-- ----------------------------------------------------------------------------------------------------------- -->
     <nav>
-      <!--If user is logged in then display message -->
-      {% if request.session.user_logged_in.logged_in == True %}
+        <!--If user is logged in then display message -->
+        {% if request.session.user_logged_in.logged_in == True %}
 
-      <ul class="nav nav-pills">
+        <ul class="nav nav-pills">
 
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Welcome {{request.session.user_logged_in.first_name}}</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Welcome {{request.session.user_logged_in.first_name}}</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="/books">Home</a>
+            <a class="nav-link" href="/books">Home</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="/users/logout">Logout</a>
+            <a class="nav-link" href="/users/logout">Logout</a>
         </li>
-      </ul>
+        </ul>
       {% endif %}
     </nav>
     <!-- ----------------------------------------------------------------------------------------------------------- -->

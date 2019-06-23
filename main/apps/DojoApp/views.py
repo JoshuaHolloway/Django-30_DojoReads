@@ -1,7 +1,7 @@
 # ======================================================================================================================
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
-from .models import Users, Reviews
+from .models import Users, Reviews, Books
 from datetime import datetime
 import bcrypt
 # ======================================================================================================================
@@ -80,6 +80,7 @@ def post_review(request):
     context = {'reviews': reviews}
 
     return render(request, "DojoApp/books.html", context)
+# ======================================================================================================================
 # ======================================================================================================================
 # ======================================================================================================================
 # ======================================================================================================================
@@ -173,4 +174,33 @@ def logout(request):
     request.session.pop('user_logged_in')
     request.session['logged_in'] = True
     return redirect("/")
+# ======================================================================================================================
+# ======================================================================================================================
+# ======================================================================================================================
+# ======================================================================================================================
+def addBook(request):
+    return render(request, 'DojoApp/add.html')
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+def newBook(request):
+
+    # TODO: Queries to add book and review
+    title = request.POST['title']
+    review = request.POST['review']
+
+    print(title)
+    print(review)
+
+    # TODO: Get book_id from create query
+    book_id = 1
+
+    # TODO: Grab user-id from session
+    book = Books.objects.create(title=title)
+    #user = Users.objects.get(id=user_id)
+    #review = Reviews.objects.create(review=review, user=user)
+
+    return redirect('/books/' + str(book_id))
+# ======================================================================================================================
+def showBook(request, book_id):
+    context = {'book': Books.objects.get(id=book_id)}
+    return render(request, 'DojoApp/showBook.html', context)
 # ======================================================================================================================

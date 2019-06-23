@@ -60,6 +60,7 @@ class Users(models.Model):
         return f"Users: ({self.first_name}, {self.last_name}, {self.email}), {self.password_hash})"
 # ======================================================================================================================
 # Table-2:
+# Each user can have multiple review and each review is by one user (one-many: user->reviews)
 class Reviews(models.Model):
     review = models.TextField()
     user = models.ForeignKey(Users, related_name="reviews")
@@ -69,3 +70,23 @@ class Reviews(models.Model):
     def __repr__(self):
         return f"Reviews: ({self.review})"
 # ======================================================================================================================
+# Table-3:
+# Each book has multiple reviews and each review has one book (one-many:   book->reviews)
+# Each book has multiple users and each user has multiple book (many-many: book<->users)
+class Books(models.Model):
+    title = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __repr__(self):
+        return f"Book: ({self.title})"
+# ======================================================================================================================
+# Table-4:
+# Each author has multiple books and book has one author (one-many: author->books)
+class Author(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __repr__(self):
+        return f"Book: ({self.name})"

@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Books</title>
+        <title>Reviews</title>
         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
         <!-- TODO: move out the CSS from each HTML file into a common single file-->
         {% load static %}
@@ -185,20 +185,50 @@
         <nav>
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <a class="nav-link disabled" tabindex="-1" aria-disabled="true">Welcome {{request.session.user_logged_in.first_name}}</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/books/add">Add Book and Review</a>
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Welcome {{request.session.user_logged_in.first_name}}</a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="/users/logout">Logout</a>
                 </li>
-            </ul>
+          </ul>
         </nav>
         <!-- ------------------------------------------------------------------------------------------------------- -->
         <main>
+            <!-- Modified template from: https://codepen.io/magnus16/pen/buGiB -->
+            <div class="detailBox">
+                <div class="titleBox">
+                <label>Post a Review</label>
+                    <form action='/post_review' class="form-inline" role="form" method='post'>
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <input name="review" class="form-control" type="text" placeholder="Your Review" />
+                        </div>
+
+                        <div class="form-group">
+                            <button name="submit-button" class="btn btn-default">Add</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="commentBox">
+                <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                </div>
+                <div class="actionBox">
+                    <ul class="commentList">
+                    {% for review in reviews reversed %}
+                        <li>
+                            <div class="commenterImage">
+                                <img src="http://placekitten.com/50/50" />
+                            </div>
+                            <div class="commentText">
+                                <p class="">{{ review.review }}</p>
+                                <span class="date sub-text">By {{review.user.first_name}} on {{review.created_at}}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
 
         </main>
 
