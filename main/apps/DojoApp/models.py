@@ -60,23 +60,12 @@ class Users(models.Model):
         return f"Users: ({self.first_name}, {self.last_name}, {self.email}), {self.password_hash})"
 # ======================================================================================================================
 # Table-2:
-class Messages(models.Model):
-    message = models.TextField()
-    user = models.ForeignKey(Users, related_name="messages")
+class Reviews(models.Model):
+    review = models.TextField()
+    user = models.ForeignKey(Users, related_name="reviews")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __repr__(self):
-        return f"Messages: ({self.message})"
-# ======================================================================================================================
-# Table-3:
-class Comments(models.Model):
-    comment = models.TextField()
-    user    = models.ForeignKey(Users,    related_name="comments")
-    message = models.ForeignKey(Messages, related_name="comments")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __repr__(self):
-        return f"Comments: ({self.comment})"
+        return f"Reviews: ({self.review})"
 # ======================================================================================================================

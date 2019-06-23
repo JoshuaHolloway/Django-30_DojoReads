@@ -1,7 +1,7 @@
 # ======================================================================================================================
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
-from .models import Users, Messages, Comments
+from .models import Users, Reviews
 from datetime import datetime
 import bcrypt
 # ======================================================================================================================
@@ -36,7 +36,7 @@ def root(request):
     return redirect("/users/reg_login")
 
     # # TODO: Correct this logic
-    # #  -Desired: if user is already logged in then route to message/comment-page, else, route to register/login-page
+    # #  -Desired: if user is already logged in then route to review/comment-page, else, route to register/login-page
     # if request.session['logged_in'] == None or request.session['logged_in'] == False:
     #     return redirect("/users/reg_login")
     # else:
@@ -46,60 +46,40 @@ def root(request):
 def reg_login(request):
     return render(request, "DojoApp/reg_login.html")
 # ======================================================================================================================
-def wall(request):
+# MAIN PAGE
+def books(request):
 
     # # DEBUG
     # user_id = request.session['user_logged_in']['id']
     # user = Users.objects.get(id=user_id)       # Grab specific user
     # print(user)
-    # #message = Messages.objects.create(message='test message', user=user)
-    # message = Messages.objects.create(message='test message')
-    # print(Messages.objects.all())
+    # #review = Reviews.objects.create(review='test review', user=user)
+    # review = Reviews.objects.create(review='test review')
+    # print(Reviews.objects.all())
 
 
     # time = datetime.now()
     # time = time.strftime("%Y/%m/%d %I:%M %p")
-    return render(request, "DojoApp/wall.html", {'messages': Messages.objects.all()})
+    return render(request, "DojoApp/books.html", {'reviews': Reviews.objects.all()})
 # ======================================================================================================================
-def post_message(request):
+def post_review(request):
 
-    # Step 0: Grab the value of the field from request.POST['message']
-    message = request.POST['message']
+    # Step 0: Grab the value of the field from request.POST['review']
+    review = request.POST['review']
 
-    # Step 1: Create a new message row in the Table
-    #comment = Comment.objects.create(message=message) # BEFORE adding [FK]
+    # Step 1: Create a new review row in the Table
     user_id = request.session['user_logged_in']['id']
 
-    # TODO: Tie each message to a specific user (e.g., uncomment out below)
+    # TODO: Tie each review to a specific user (e.g., uncomment out below)
     user = Users.objects.get(id=user_id)
-    message = Messages.objects.create(message=message, user=user)
-    #message = Messages.objects.create(message=message)
+    review = Reviews.objects.create(review=review, user=user) # TODO: Change to review
+    #review = Reviews.objects.create(review=review)
 
     # Step 2: Pass table into HTML
-    messages = Messages.objects.all()
-    context = {'messages': messages}
+    reviews = Reviews.objects.all() # TODO: Change to review
+    context = {'reviews': reviews}
 
-    return render(request, "DojoApp/wall.html", context)
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-def post_comment(request, message_id):
-
-    # Step 0: Grab the value of the field from request.POST['comment']
-    comment = request.POST['comment']
-
-    # Step 1: Create a new comment row in the Table
-    #comment = Comment.objects.create(message=message) # BEFORE adding [FK]
-    user_id = request.session['user_logged_in']['id']
-    user = Users.objects.get(id=user_id)       # Grab specific user
-    message = Messages.objects.get(id=message_id) # Grab specific message
-
-    comment = Comments.objects.create(comment=comment, message=message, user=user)
-
-    # Step 2: Pass table into HTML
-    comments = Comments.objects.all()
-    messages = Messages.objects.all()
-    context = {'messages': messages, 'comments': comments}
-
-    return render(request, "DojoApp/wall.html", context)
+    return render(request, "DojoApp/books.html", context)
 # ======================================================================================================================
 # ======================================================================================================================
 # ======================================================================================================================
@@ -184,7 +164,7 @@ def userLogin(request):
         #request.session['user_logged_in']['id']
 
         # return render(request, "DojoApp/logged_in.html", {'user': user})
-        return redirect("/wall")
+        return redirect("/books")
     else:
         print("failed password")
         return HttpResponse("You Loose!")

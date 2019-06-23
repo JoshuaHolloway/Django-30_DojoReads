@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Index.html</title>
+        <title>Books.html</title>
         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
         <!-- TODO: move out the CSS from each HTML file into a common single file-->
         {% load static %}
@@ -57,11 +57,11 @@
                 float: right;
             }
 
-            #message {
+            #review {
                 border: 1px black solid;
             }
 
-            #message_box {
+            #review_box {
                 border: dashed 1px red;
 
                 padding-left: 10%;
@@ -73,7 +73,7 @@
                 */
             }
 
-            #message_box_outer {
+            #review_box_outer {
                 border: dashed 1px red;
 
 
@@ -82,12 +82,12 @@
 
             }
 
-            #message_area div label{
+            #review_area div label{
               text-align: left;
               display: block;
             }
 
-            #message_area div textarea {
+            #review_area div textarea {
               align-items: center;
               display: block;
               width: 99%;
@@ -113,11 +113,15 @@
             .titleBox {
                 background-color:#fdfdfd;
                 padding:10px;
+                text-align: left;
             }
             .titleBox label{
               color:#444;
               margin:0;
+
               display:inline-block;
+
+
             }
 
             .commentBox {
@@ -172,7 +176,6 @@
                 padding:10px;
             }
 
-
         </style>
         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     </head>
@@ -181,11 +184,6 @@
         <!-- ------------------------------------------------------------------------------------------------------- -->
         <nav>
           <ul class="nav nav-pills">
-            <li class="nav-item">
-              <!-- <a class="nav-link active" href="#">Active</a> -->
-              <h3>The Wall!</h3>
-            </li>
-
             <li class="nav-item">
               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Welcome {{request.session.user_logged_in.first_name}}</a>
             </li>
@@ -200,12 +198,11 @@
           <!-- Modified template from: https://codepen.io/magnus16/pen/buGiB -->
           <div class="detailBox">
               <div class="titleBox">
-                <label>Post a Message</label>
-                  <button type="button" class="close" aria-hidden="true">&times;</button>
-                  <form action='/post_message' class="form-inline" role="form" method='post'>
+                <label>Post a Review</label>
+                  <form action='/post_review' class="form-inline" role="form" method='post'>
                     {% csrf_token %}
                       <div class="form-group">
-                          <input name="message" class="form-control" type="text" placeholder="Your Message" />
+                          <input name="review" class="form-control" type="text" placeholder="Your Review" />
                       </div>
 
                       <div class="form-group">
@@ -218,56 +215,15 @@
               </div>
               <div class="actionBox">
                   <ul class="commentList">
-                    {% for message in messages reversed %}
+                    {% for review in reviews reversed %}
                       <li>
                           <div class="commenterImage">
                             <img src="http://placekitten.com/50/50" />
                           </div>
                           <div class="commentText">
-                              <p class="">{{ message.message }}</p>
-                              <span class="date sub-text">By {{message.user.first_name}} on {{message.created_at}}</span>
+                              <p class="">{{ review.review }}</p>
+                              <span class="date sub-text">By {{review.user.first_name}} on {{review.created_at}}</span>
                           </div>
-
-
-
-
-                          <!-- Comments -->
-                          <div class="detailBox">
-                              <div class="titleBox">
-                                <label>Post a Comment</label>
-                                  <button type="button" class="close" aria-hidden="true">&times;</button>
-                                  <form action='/post_comment/{{message.id}}' class="form-inline" role="form" method='post'>
-                                    {% csrf_token %}
-                                      <div class="form-group">
-                                          <input name="comment" class="form-control" type="text" placeholder="Your Comment" />
-                                      </div>
-
-                                      <div class="form-group">
-                                          <button name="submit-button-comment" class="btn btn-default">Add</button>
-                                      </div>
-                                  </form>
-                              </div>
-                              <div class="commentBox">
-                              <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-                              </div>
-                              <div class="actionBox">
-                                  <ul class="commentList">
-                                    {% for comment in message.comments.all %}
-                                      <li>
-                                          <div class="commenterImage">
-                                            <img src="http://placekitten.com/50/50" />
-                                          </div>
-                                          <div class="commentText">
-                                              <p class="">{{ comment.comment }}</p>
-                                              <span class="date sub-text">{{comment.created_at}}</span>
-
-                                          </div>
-                                      </li>
-                                    {% endfor %}
-                              </div>
-                          </div>
-
-
                       </li>
                     {% endfor %}
               </div>
